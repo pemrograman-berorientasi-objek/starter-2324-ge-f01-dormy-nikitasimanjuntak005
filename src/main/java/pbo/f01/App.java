@@ -13,7 +13,7 @@ private static EntityManagerFactory factory;
 private static EntityManager entityManager;
 
     public static void main(String[] _args) {
-        factory = Persistence.createEntityManagerFactory("Student_Dorm_pu");
+        factory = Persistence.createEntityManagerFactory("Student_Dormy_pu");
         entityManager = factory.createEntityManager();
     drivApp.initializeEntityManager();
     drivApp.cleanTableStudent();

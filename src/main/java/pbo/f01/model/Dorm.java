@@ -40,6 +40,15 @@ public  void setCapacity(Integer entranceYear) {
     this.capacity = entranceYear;
 }
 
+public String getGender(){
+    return gender;
+}
+
+public void setGender(String gender){
+    this.gender = gender;    
+}
+
+    
     public String toString() {
         return nameDorm + "|" + capacity + "|" + gender;
     }
