@@ -124,7 +124,6 @@ public class App {
             System.err.println("Error creating dorm: " + e.getMessage());
         }
     }
-
     private static void createEnroll(String studentId, String dormName) {
         entityManager.getTransaction().begin();
         try {
@@ -136,10 +135,31 @@ public class App {
                 return;
             }
             if (dorm == null) {
-                System.err.println("Dorm with name " + dormName + " not found.");
+                System.err.println("Dorm " + dormName + " not found.");
                 entityManager.getTransaction().rollback();
                 return;
             }
+            if (dorm.isFull()) {
+                System.err.println("Dorm " + dormName + " is full.");
+                entityManager.getTransaction().rollback();
+                return;
+            }
+    
+    // private static void createEnroll(String studentId, String dormName) {
+    //     entityManager.getTransaction().begin();
+    //     try {
+    //         Student student = entityManager.find(Student.class, studentId);
+    //         Dorm dorm = entityManager.find(Dorm.class, dormName);
+    //         if (student == null) {
+    //             System.err.println("Student with ID " + studentId + " not found.");
+    //             entityManager.getTransaction().rollback();
+    //             return;
+    //         }
+    //         if (dorm == null) {
+    //             System.err.println("Dorm with name " + dormName + " not found.");
+    //             entityManager.getTransaction().rollback();
+    //             return;
+    //         }
             if (!student.getGender().equalsIgnoreCase(dorm.getGender())) {
                 System.err.println("Gender mismatch between student and dorm.");
                 entityManager.getTransaction().rollback();
@@ -156,11 +176,14 @@ public class App {
             entityManager.persist(student);
             entityManager.persist(dorm);
             entityManager.getTransaction().commit();
-        } catch (Exception e) {
+        // proceed with enrollment
+    } catch (Exception e) {
+        if (entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().rollback();
-            System.err.println("Error enrolling student: " + e.getMessage());
         }
+        e.printStackTrace();
     }
+}
 
     private static void displayAll() {
         List<Dorm> dorms = entityManager.createQuery("SELECT d FROM Dorm d ORDER BY d.nameDorm", Dorm.class).getResultList();
@@ -171,6 +194,7 @@ public class App {
             for (Student student : students) {
                 System.out.println(student);
             }
+    
         }
     }
 }

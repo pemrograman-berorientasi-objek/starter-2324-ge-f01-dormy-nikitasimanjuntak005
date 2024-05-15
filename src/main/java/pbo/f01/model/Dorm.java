@@ -66,6 +66,10 @@ public class Dorm {
         this.students = students;
     }
 
+    public boolean isFull() {
+        return students != null && students.size() >= capacity;
+    }
+
     @Override
     public String toString() {
         return nameDorm + "|" + gender + "|" + capacity + "|" + (students != null ? students.size() : 0);
